@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+    echo "Illegal number of parameters"
+    exit 999
+fi
+
+BASE_FOLDER=$(dirname $(dirname "$BASH_SOURCE"))
+
+TARGET_PATH="$1"
+ENV_PATH="$TARGET_PATH/munkiwebadmin_env"
+MWA_PATH="$TARGET_PATH/munkiwebadmin"
+MWA_DEFAULT_SETTINGS_PATH="$MWA_PATH/settings.py"
+
+MWA_SETTINGS_PARSER_FILENAME="settings_autowebapp"
+MWA_SETTINGS_PARSER_PATH="$MWA_PATH/$MWA_SETTINGS_PARSER_FILENAME.py"
+
+MWA_CONFIG_PARSER_SRC="$BASE_FOLDER/files/settings_autowebapp.py"
+
+MWA_SETTINGS_INI_PATH="$MWA_PATH/settings.ini"
+
+CHECKSUM_LIST="$TARGET_PATH/checksum"

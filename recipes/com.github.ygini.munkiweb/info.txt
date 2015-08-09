@@ -1,0 +1,1 @@
+This package install munki web admin and let you configure it with your existing munki repo.

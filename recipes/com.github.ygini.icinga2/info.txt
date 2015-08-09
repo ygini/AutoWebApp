@@ -1,0 +1,1 @@
+This package deploy a full installation of icinga2 and related web UI.
