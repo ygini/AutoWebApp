@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import sys
 import argparse
 import subprocess
 import ConfigParser
@@ -40,7 +41,7 @@ def do_install():
                 returnCode = subprocess.call(process_args)
                 if not returnCode == 0:
                     print "Error when running subscript "+script_path
-                    exit 1
+                    sys.exit(1)
 
 
 def do_set():
