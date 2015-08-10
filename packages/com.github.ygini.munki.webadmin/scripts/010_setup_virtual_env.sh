@@ -13,6 +13,9 @@ then
         echo "####################################################################################################"
         echo "### Impossible to install Python virtualenv, please, do it by your own or run this tool as root. ###"
         echo "####################################################################################################"
+        echo
+        echo easy_install virtualenv
+        echo
         exit 1
     fi
 fi

@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4708c46-c3a8-4b4d-9722-d5ed1e814b13" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/autowebapp" afterPath="$PROJECT_DIR$/autowebapp" />
     </list>
     <ignored path="autowebapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,11 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="autowebapp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="autowebapp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/autowebapp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="125" column="121" selection-start-line="125" selection-start-column="121" selection-end-line="125" selection-end-column="121" />
+            <state vertical-scroll-proportion="0.53241897">
+              <caret line="40" column="53" selection-start-line="40" selection-start-column="53" selection-end-line="40" selection-end-column="53" />
               <folding>
                 <element signature="e#23#32#0" expanded="true" />
               </folding>
@@ -35,10 +36,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="run" pinned="false" current-in-tab="true">
+      <file leaf-file-name="run" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.59850377">
+            <state vertical-scroll-proportion="0.0">
               <caret line="43" column="30" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
               <folding>
                 <element signature="e#23#32#0" expanded="true" />
@@ -51,7 +52,7 @@
         <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="115" selection-start-line="14" selection-start-column="115" selection-end-line="14" selection-end-column="115" />
+              <caret line="17" column="12" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -74,9 +75,9 @@
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/030_deploy_templates.sh" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/webapp.plist" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/httpd24.conf" />
+        <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh" />
         <option value="$PROJECT_DIR$/autowebapp" />
-        <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run" />
       </list>
     </option>
   </component>
@@ -492,28 +493,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh">
+    <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="115" selection-start-line="14" selection-start-column="115" selection-end-line="14" selection-end-column="115" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/autowebapp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="125" column="121" selection-start-line="125" selection-start-column="121" selection-end-line="125" selection-end-column="121" />
+          <caret line="43" column="30" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
           <folding>
             <element signature="e#23#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run">
+    <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59850377">
-          <caret line="43" column="30" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="12" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autowebapp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.53241897">
+          <caret line="40" column="53" selection-start-line="40" selection-start-column="53" selection-end-line="40" selection-end-column="53" />
           <folding>
             <element signature="e#23#32#0" expanded="true" />
           </folding>

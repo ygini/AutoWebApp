@@ -29,16 +29,17 @@ class AWAInterpreter(cmd.Cmd):
         self.initialCheckup()
 
     def initialCheckup(self):
-        if not os.path.isdir(self.webapp_install_path):
-            try:
-                os.mkdir(self.webapp_install_path)
-            except OSError:
-                print "Impossible to create webapp installation directory "+self.webapp_install_path
-                print "Please be sure to run this tool as root or check file permissions"
-        else:
-            if not os.access(self.webapp_install_path, os.W_OK):
-                print "Impossible to write inside webapp installation directory "+self.webapp_install_path
-                print "Please be sure to run this tool as root or check file permissions"
+        for path in [self.webapp_install_path, self.webapp_httpd_config_path]:
+            if not os.path.isdir(path):
+                try:
+                    os.mkdir(self.path)
+                except OSError:
+                    print "Impossible to create installation directory "+path
+                    print "Please be sure to run this tool as root or check file permissions"
+            else:
+                if not os.access(path, os.W_OK):
+                    print "Impossible to write inside installation directory "+self.webapp_install_path
+                    print "Please be sure to run this tool as root or check file permissions"
 
     # <editor-fold desc="Tools">
     def packageExist(self, p):
