@@ -107,14 +107,19 @@ class AWAInterpreter(cmd.Cmd):
         if self.packageExist(packageID):
             if self.installExist(installID):
                 print "Installation ID already used"
+            elif os.path.isdir(os.path.join(self.webapp_install_path, installID,)):
+                print "An artefact of installation already exist with this ID but don't seem complete"
+                print """A wild "rm -rf """+os.path.join(self.webapp_install_path, installID,)+"""" is recommanded"""
             else:
                 package_path=os.path.join(self.package_path, packageID)
                 install_path=os.path.join(self.webapp_install_path, installID)
 
                 os.mkdir(install_path)
-                returnCode = subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'install'])
+                process = subprocess.Popen([os.path.join(package_path, "run"), '-p', install_path, '-c', 'install'])
 
-                if returnCode == 0:
+                process.wait()
+
+                if process.returncode == 0:
                     package_info_path=os.path.join(package_path, 'package.info')
                     install_info_path=os.path.join(install_path, 'install.info')
 

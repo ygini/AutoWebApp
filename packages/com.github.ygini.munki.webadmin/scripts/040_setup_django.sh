@@ -12,7 +12,7 @@ echo "#############################################################"
 echo "######### NEXT STEP WILL REQUIRE ADMIN ACCOUNT INFO #########"
 echo "#############################################################"
 
-python manage.py syncdb
+python manage.py syncdb -v 0
 python manage.py collectstatic --noinput > /dev/null
 
 exit 0

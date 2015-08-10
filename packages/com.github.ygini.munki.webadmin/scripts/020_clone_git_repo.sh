@@ -15,6 +15,6 @@ fi
 
 echo "# Cloning MunkiWebAdmin sources from GitHub"
 
-git clone https://github.com/munki/munkiwebadmin "$MWA_PATH" > /dev/null
+git clone -q https://github.com/munki/munkiwebadmin "$MWA_PATH" > /dev/null
 
 exit 0

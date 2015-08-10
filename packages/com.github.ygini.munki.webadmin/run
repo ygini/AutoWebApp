@@ -34,14 +34,13 @@ def do_install():
     folder_content.sort()
     for script in folder_content:
         script_path = os.path.join(src_path, script)
-        if os.path.isfile(script_path):
-            filename, file_extension = os.path.splitext(script_path)
-            if file_extension == ".sh":
-                process_args = [script_path, TARGETPATH]
-                returnCode = subprocess.call(process_args)
-                if not returnCode == 0:
-                    print "Error when running subscript "+script_path
-                    sys.exit(1)
+        if os.access(script_path, os.X_OK):
+            print "Subscript "+script
+            process_args = [script_path, TARGETPATH]
+            returnCode = subprocess.call(process_args)
+            if not returnCode == 0:
+                print "Error when running subscript "+script_path
+                sys.exit(1)
 
 
 def do_set():
