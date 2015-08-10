@@ -3,6 +3,8 @@
 scriptdir=`dirname "$BASH_SOURCE"`
 source "$scriptdir/shared"
 
+cp "$BASE_FOLDER/files/munkiwebadmin.wsgi" "$TARGET_PATH/munkiwebadmin.wsgi"
+
 cp "$MWA_PATH/settings_template.py" "$MWA_DEFAULT_SETTINGS_PATH"
 
 echo "" >> "$MWA_DEFAULT_SETTINGS_PATH"

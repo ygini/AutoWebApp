@@ -10,6 +10,7 @@ TARGETPATH=""
 KEY=""
 VALUE=""
 WORKPATH=os.path.dirname(os.path.realpath(__file__))
+TMP_FILE=""
 
 def do_remove():
     for root, dirs, files in os.walk(TARGETPATH, topdown=False):
@@ -81,18 +82,42 @@ def do_get():
                 print "{} {}".format((section + "." + variable).ljust(40),settings.get(section, variable).ljust(40))
 
 
+def do_httpd24():
+    if TMP_FILE:
+        httpd_src = os.path.join(WORKPATH, 'files', 'httpd24.conf')
+        with open(httpd_src) as f:
+            httpd_conf = f.read()
+        httpd_conf = httpd_conf.replace('%%INSTALLATION_ROOT%%', TARGETPATH)
+        with open(TMP_FILE, 'w') as f:
+            f.write(httpd_conf)
+    else:
+        print "A writable file path must be specified with -f option."
+
+def do_webapp():
+    if TMP_FILE:
+        webapp_src = os.path.join(WORKPATH, 'files', 'webapp.plist')
+        with open(webapp_src) as f:
+            webapp_conf = f.read()
+        webapp_conf.replace('%%INSTALLATION_ROOT%%', TARGETPATH)
+        with open(TMP_FILE, 'w') as f:
+            f.write(webapp_conf)
+    else:
+        print "A writable file path must be specified with -f option."
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Install the package.')
     parser.add_argument('-p','--path', help='Deployment path', required=True)
     parser.add_argument('-c','--command', help='Command (install, remove, set, get)', required=True)
     parser.add_argument('-k','--key', help='The key to work with (commands: get, set)', required=False)
     parser.add_argument('-s','--set', help='The value to set (command: set)', required=False)
+    parser.add_argument('-f','--file', help='Temp file path used for file content exchange with autowebapp', required=False)
 
     args = vars(parser.parse_args())
 
     TARGETPATH = args['path']
     KEY = args['key']
     VALUE = args['set']
+    TMP_FILE = args['file']
     
     if args['command'] == "install":
         do_install()
@@ -102,5 +127,9 @@ if __name__ == '__main__':
         do_get()
     elif args['command'] == "set":
         do_set()
+    elif args['command'] == "httpd24":
+        do_httpd24()
+    elif args['command'] == "webapp":
+        do_webapp()
     else:
         print "Supported commands are install, remove, get and set. Nothing else."

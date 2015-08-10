@@ -2,131 +2,188 @@
 
 import os
 import sys
+
+INSTALLATION_PATH = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(INSTALLATION_PATH, 'lib'))
+
 import cmd
-import readline
 import ConfigParser
 import subprocess
 import shutil
-
-RECIPE_PATH="./recipes"
+import datetime
+import tempfile
+import plistlib
 
 class AWAInterpreter(cmd.Cmd):
     """Entry point for command line handling."""
 
-    prompt = "autowebapp: "
-    webapp_base_path = "/Library/AutoWebApp"
+    webapp_base_path = INSTALLATION_PATH
     webapp_install_path = os.path.join(webapp_base_path, "installed")
+    webapp_httpd_config_path = os.path.join(webapp_base_path, "httpd.conf")
+    webapp_plist_config_path = '/Library/Server/Web/Config/apache2/webapps'
+    package_path=os.path.join(webapp_base_path, "packages")
 
-    def packageExist(self, p):
-        return os.path.isfile(os.path.join(RECIPE_PATH,p,"info.txt")) and os.path.isfile(os.path.join(RECIPE_PATH,p,"run"))
-    
-    def packageIsInstalled(self, p):
-        return os.path.exists(os.path.join(self.webapp_install_path, p))
+    def __init__(self, completekey='tab', stdin=None, stdout=None):
+        cmd.Cmd.__init__(self, completekey, stdin, stdout)
+        self.prompt = "autowebapp: "
+        self.initialCheckup()
 
-    def validPackages(self, filter=None):
-        if not filter:
-            validpackages = [ p for p in os.listdir(RECIPE_PATH) if self.packageExist(p) ]
+    def initialCheckup(self):
+        if not os.path.isdir(self.webapp_install_path):
+            try:
+                os.mkdir(self.webapp_install_path)
+            except OSError:
+                print "Impossible to create webapp installation directory "+self.webapp_install_path
+                print "Please be sure to run this tool as root or check file permissions"
         else:
-            validpackages = [ p for p in os.listdir(RECIPE_PATH) if self.packageExist(p) and filter in p ]
-        return validpackages
-    
-    def do_list(self, line):
-        validpackages = self.validPackages(line)
-        print '\n'.join(validpackages)
+            if not os.access(self.webapp_install_path, os.W_OK):
+                print "Impossible to write inside webapp installation directory "+self.webapp_install_path
+                print "Please be sure to run this tool as root or check file permissions"
 
-    def help_list(self):
-        print '\n'.join([
-        "list <keyword>",
-        "Show the list of availabe webapps for installation. If you specify a keyword, it will look for all webapp identifier containing it."
-        ])
+    # <editor-fold desc="Tools">
+    def packageExist(self, p):
+        return os.path.isfile(os.path.join(self.package_path,p,"info.txt")) \
+               and os.path.isfile(os.path.join(self.package_path,p,"package.info")) \
+               and os.path.isfile(os.path.join(self.package_path,p,"run"))
+
+    def installExist(self, p):
+        return os.path.isfile(os.path.join(self.webapp_install_path, p, 'install.info'))
+
+    def listPackages(self, filter=None):
+        if not filter:
+            validpackages = [ p for p in os.listdir(self.package_path) if self.packageExist(p) ]
+        else:
+            validpackages = [ p for p in os.listdir(self.package_path) if self.packageExist(p) and filter in p ]
+        return validpackages
+    # </editor-fold>
+
+    # <editor-fold desc="CLI commands">
+    def do_list(self, line):
+        packages = self.listPackages(line)
+        print '\n'.join(packages)
 
     def do_infos(self, line):
-        with open(os.path.join(RECIPE_PATH,line,"info.txt")) as info:
+        with open(os.path.join(self.package_path,line,"info.txt")) as info:
             print info.read()
-            info.close()
 
     def complete_infos(self, text, line, begidx, endidx):
-        return self.validPackages(text)
-
-    def help_infos(self):
-        print '\n'.join([
-        "info [webapp]",
-        "Display general infos for specified webapp."
-        ])
+        return self.listPackages(text)
 
     def do_details(self, line):
         self.do_infos(line)
         variables = ConfigParser.ConfigParser()
-        variables.read(os.path.join(RECIPE_PATH,line,"variables.ini"))
+        variables.read(os.path.join(self.package_path,line,"variables.ini"))
         output = []
         for section in variables.sections():
             for variable in variables.options(section):
                 print "{} {}".format((section + "." + variable).ljust(40),variables.get(section, variable).ljust(40))
 
-    def help_details(self):
-        print '\n'.join([
-        "details [webapp]",
-        "Display general infos for specified webapp plus available settings."
-        ])
-
     def do_installed(self, line):
         print "hello"
 
-    def help_installed(self):
-        print '\n'.join([
-        "installed", 
-        "Show installed webapps."
-        ])
-
     def do_install(self, line):
-        if self.packageExist(line):        
-            if self.packageIsInstalled(line):
-                print "Application already installed"
+        ids = line.split()
+        count = len(ids)
+        if count == 1:
+            packageID=ids[0]
+            installID=ids[0]
+        elif count == 2:
+            packageID=ids[0]
+            installID=ids[1]
+        else:
+            print "You must specify one or two argument only. The first will be the webapp ID to install and the second (optional) the installation ID"
+        
+        if self.packageExist(packageID):
+            if self.installExist(installID):
+                print "Installation ID already used"
             else:
-                webapp_path=os.path.join(self.webapp_install_path, line)
-                os.mkdir(webapp_path)
-                subprocess.call([os.path.join(RECIPE_PATH, line, "run"), '-p', webapp_path, '-c', 'install'])
+                package_path=os.path.join(self.package_path, packageID)
+                install_path=os.path.join(self.webapp_install_path, installID)
+
+                os.mkdir(install_path)
+                subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'install'])
+
+                package_info_path=os.path.join(package_path, 'package.info')
+                install_info_path=os.path.join(install_path, 'install.info')
+
+                install_info = ConfigParser.ConfigParser()
+                install_info.read(package_info_path)
+
+                install_info.add_section('installation')
+                install_info.set('installation', 'installation_date', datetime.datetime.now().isoformat())
+                install_info.set('installation', 'package', packageID)
+
+                f = open(install_info_path, 'w')
+                install_info.write(f)
+                f.close()
+
+                self.do_refreshApacheSettings(installID)
+
                 print ""
         else:
             print "Package ID "+line+" invalid"
-    
-    def help_install(self):
-        print '\n'.join([
-        "install [webapp ...]",
-        "Install specified webapps."
-        ])
 
     def do_remove(self, line):
-        if self.packageIsInstalled(line):
-            webapp_path=os.path.join(self.webapp_install_path, line)
-            subprocess.call([os.path.join(RECIPE_PATH, line, "run"), '-p', webapp_path, '-c', 'remove'])
-            shutil.rmtree(webapp_path)
-        else:
-            print "Package not installed"
-    
-    def help_remove(self):
-        print '\n'.join([
-        "remove [webapp ...]",
-        "Remove specified webapps, be careful, all related data will be lost."
-        ])
+        for installID in line.split():
+            if self.installExist(installID):
+                install_path=os.path.join(self.webapp_install_path, installID)
+
+                install_info_path=os.path.join(install_path, 'install.info')
+                install_info = ConfigParser.ConfigParser()
+                install_info.read(install_info_path)
+
+                package_path=os.path.join(self.package_path, install_info.get('installation','package'))
+
+                subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'remove'])
+
+                shutil.rmtree(install_path)
+            else:
+                print "Package not installed"
+
+    def do_refreshApacheSettings(self, line):
+        for installID in line.split():
+            if self.installExist(installID):
+                install_path=os.path.join(self.webapp_install_path, installID)
+
+                install_info_path=os.path.join(install_path, 'install.info')
+                install_info = ConfigParser.ConfigParser()
+                install_info.read(install_info_path)
+
+                package_path=os.path.join(self.package_path, install_info.get('installation','package'))
+
+                with tempfile.NamedTemporaryFile() as temp_file:
+                    subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'httpd24', '-f', temp_file.name])
+                    temp_file.flush()
+                    httpd_content = temp_file.read()
+
+                with tempfile.NamedTemporaryFile() as temp_file:
+                    subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'webapp', '-f', temp_file.name])
+                    webapp_content = plistlib.readPlist(temp_file)
+
+                httpd_file_path = os.path.join(self.webapp_httpd_config_path, installID+'.conf')
+                with open(httpd_file_path, 'w') as httpd_file:
+                    httpd_file.write(httpd_content)
+
+                webapp_content['installationIndicatorFilePath'] = install_info_path
+
+                if not 'includeFiles' in webapp_content:
+                    webapp_content['includeFiles'] = list()
+                webapp_content['includeFiles'].append(httpd_file_path)
+
+                webapp_content['name'] = installID
+                webapp_content['displayName'] = webapp_content['displayName']+" ("+installID+")"
+
+                webapp_file_path = os.path.join(self.webapp_plist_config_path, installID+'.plist')
+                plistlib.writePlist(webapp_content, webapp_file_path)
+
+            else:
+                print "Package not installed"
 
     def do_getSettings(self, line):
         print "hello"
 
-    def help_getSettings(self):
-        print '\n'.join([
-        "getSettings [webapp] <key>",
-        "List webapp settings and value (only for installed one)."
-        ])
-
     def do_setSettings(self, line):
         print "hello"
-
-    def help_setSettings(self):
-        print '\n'.join([
-        "setSettings [webapp] [key] [value]",
-        "Set settings for installed webapp."
-        ])
 
     def do_EOF(self, line):
         return True
@@ -134,14 +191,74 @@ class AWAInterpreter(cmd.Cmd):
     def do_quit(self, line):
         return self.do_EOF(line)
 
-    def do_exit(self, line):    
+    def do_exit(self, line):
         return self.do_EOF(line)
+    # </editor-fold>
+
+    # <editor-fold desc="CLI help">
+    def help_list(self):
+        print '\n'.join([
+            "list <keyword>",
+            "Show the list of availabe webapps for installation. If you specify a keyword, it will look for all webapp identifier containing it."
+        ])
+
+    def help_infos(self):
+        print '\n'.join([
+            "info [webapp]",
+            "Display general infos for specified webapp."
+        ])
+
+    def help_details(self):
+        print '\n'.join([
+            "details [webapp]",
+            "Display general infos for specified webapp plus available settings."
+        ])
+
+    def help_installed(self):
+        print '\n'.join([
+            "installed",
+            "Show installed webapps."
+        ])
+
+    def help_install(self):
+        print '\n'.join([
+            "install webapp <installation ID>",
+            "Install specified webapp.",
+            "Additionnal argument can be used to specify installation ID. Usefull when one webapp is installed multiple time.",
+            "Default installation ID is the webapp ID."
+        ])
+
+    def help_remove(self):
+        print '\n'.join([
+            "remove [installationID ...]",
+            "Remove specified webapps, be careful, all related data will be lost.",
+            "Installation ID is by default the webapp ID, but can be overrided to allow multiple instances"
+        ])
+
+    def help_refreshApacheSettings(self):
+        print '\n'.join([
+            "refreshApacheSettings [installationID ...]",
+            "Regenerate webapp plist and apache configuration file for specified installation ID."
+        ])
+
+    def help_getSettings(self):
+        print '\n'.join([
+            "getSettings [webapp] <key>",
+            "List webapp settings and value (only for installed one)."
+        ])
+
+    def help_setSettings(self):
+        print '\n'.join([
+            "setSettings [webapp] [key] [value]",
+            "Set settings for installed webapp."
+        ])
 
     def help_EOF(self):
         print '\n'.join([
-        "^D",
-        "Press ctrl+D to properly exit from autowebapp shell."
+            "^D",
+            "Press ctrl+D to properly exit from autowebapp shell."
         ])
+# </editor-fold>
 
 
 if __name__ == '__main__':
