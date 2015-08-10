@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4708c46-c3a8-4b4d-9722-d5ed1e814b13" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/900_fix_perm.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/munkiwebadmin.wsgi" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/munkiwebadmin.wsgi" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/autowebapp" afterPath="$PROJECT_DIR$/autowebapp" />
     </list>
     <ignored path="autowebapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="autowebapp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="autowebapp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/autowebapp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="39" column="48" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="48" />
+            <state vertical-scroll-proportion="0.74812967">
+              <caret line="67" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
               <folding>
                 <element signature="e#23#32#0" expanded="true" />
               </folding>
@@ -37,10 +35,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="munkiwebadmin.wsgi" pinned="false" current-in-tab="true">
+      <file leaf-file-name="munkiwebadmin.wsgi" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/munkiwebadmin.wsgi">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33665836">
+            <state vertical-scroll-proportion="0.0">
               <caret line="18" column="27" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
               <folding />
             </state>
@@ -65,9 +63,9 @@
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/httpd24.conf" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh" />
-        <option value="$PROJECT_DIR$/autowebapp" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/munkiwebadmin.wsgi" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/900_fix_perm.sh" />
+        <option value="$PROJECT_DIR$/autowebapp" />
       </list>
     </option>
   </component>
@@ -459,16 +457,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/autowebapp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="48" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="48" />
-          <folding>
-            <element signature="e#23#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/030_deploy_templates.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13092269">
@@ -506,7 +494,7 @@
         <state vertical-scroll-proportion="0.59850377">
           <caret line="43" column="30" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
           <folding>
-            <element signature="e#23#32#0" expanded="true" />
+            <element signature="e#23#32#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -521,9 +509,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/munkiwebadmin.wsgi">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33665836">
+        <state vertical-scroll-proportion="0.0">
           <caret line="18" column="27" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autowebapp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.74812967">
+          <caret line="67" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+          <folding>
+            <element signature="e#23#32#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

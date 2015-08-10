@@ -56,6 +56,16 @@ class AWAInterpreter(cmd.Cmd):
         else:
             validpackages = [ p for p in os.listdir(self.package_path) if self.packageExist(p) and filter in p ]
         return validpackages
+
+    def apacheVersionKey(self):
+        output = subprocess.check_output(['apachectl', '-v'])
+        for line in output.splitlines():
+            if line.startswith('Server version'):
+                line = line.replace('Server version: Apache/', '')
+                parts = line.split('.')
+                version = parts[0]+parts[1]
+                return 'httpd'+version
+
     # </editor-fold>
 
     # <editor-fold desc="CLI commands">
@@ -157,7 +167,7 @@ class AWAInterpreter(cmd.Cmd):
                 package_path=os.path.join(self.package_path, install_info.get('installation','package'))
 
                 with tempfile.NamedTemporaryFile() as temp_file:
-                    subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'httpd24', '-f', temp_file.name])
+                    subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', self.apacheVersionKey(), '-f', temp_file.name])
                     temp_file.flush()
                     httpd_content = temp_file.read()
 
