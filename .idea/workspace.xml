@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4708c46-c3a8-4b4d-9722-d5ed1e814b13" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/autowebapp" afterPath="$PROJECT_DIR$/autowebapp" />
     </list>
     <ignored path="autowebapp.iws" />
@@ -28,7 +27,7 @@
         <entry file="file://$PROJECT_DIR$/autowebapp">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.53241897">
-              <caret line="40" column="53" selection-start-line="40" selection-start-column="53" selection-end-line="40" selection-end-column="53" />
+              <caret line="40" column="83" selection-start-line="40" selection-start-column="83" selection-end-line="40" selection-end-column="83" />
               <folding>
                 <element signature="e#23#32#0" expanded="true" />
               </folding>
@@ -514,7 +513,7 @@
     <entry file="file://$PROJECT_DIR$/autowebapp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.53241897">
-          <caret line="40" column="53" selection-start-line="40" selection-start-column="53" selection-end-line="40" selection-end-column="53" />
+          <caret line="40" column="83" selection-start-line="40" selection-start-column="83" selection-end-line="40" selection-end-column="83" />
           <folding>
             <element signature="e#23#32#0" expanded="true" />
           </folding>

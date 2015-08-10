@@ -32,13 +32,13 @@ class AWAInterpreter(cmd.Cmd):
         for path in [self.webapp_install_path, self.webapp_httpd_config_path]:
             if not os.path.isdir(path):
                 try:
-                    os.mkdir(self.path)
+                    os.mkdir(path)
                 except OSError:
                     print "Impossible to create installation directory "+path
                     print "Please be sure to run this tool as root or check file permissions"
             else:
                 if not os.access(path, os.W_OK):
-                    print "Impossible to write inside installation directory "+self.webapp_install_path
+                    print "Impossible to write inside installation directory "+path
                     print "Please be sure to run this tool as root or check file permissions"
 
     # <editor-fold desc="Tools">
