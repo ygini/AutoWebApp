@@ -4,7 +4,7 @@ import os
 import sys
 
 INSTALLATION_PATH = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(INSTALLATION_PATH, 'lib'))
+sys.path.insert(1, os.path.join(INSTALLATION_PATH, 'lib'))
 
 import cmd
 import ConfigParser
@@ -22,6 +22,8 @@ class AWAInterpreter(cmd.Cmd):
     webapp_httpd_config_path = os.path.join(webapp_base_path, "httpd.conf")
     webapp_plist_config_path = '/Library/Server/Web/Config/apache2/webapps'
     package_path=os.path.join(webapp_base_path, "packages")
+
+    env = dict(os.environ, PYTHONPATH=':'.join(sys.path))
 
     def __init__(self, completekey='tab', stdin=None, stdout=None):
         cmd.Cmd.__init__(self, completekey, stdin, stdout)
@@ -70,6 +72,32 @@ class AWAInterpreter(cmd.Cmd):
                 version = parts[0]+parts[1]
                 return 'httpd'+version
 
+    def splitOptions(self, line):
+        parts = line.split()
+        options = list()
+        is_a_long_string=False
+        long_string=""
+        for part in parts:
+            if is_a_long_string:
+                if part.endswith('"') and not part.endswith('\\"'):
+                    long_string = " ".join([long_string, part[:-1]])
+                    long_string = long_string.replace('\\"', '"')
+                    options.append(long_string)
+                    is_a_long_string=False
+                    long_string=""
+                else:
+                    long_string = " ".join([long_string, part])
+            elif part.startswith('"'):
+                is_a_long_string=True
+                long_string=part[1:]
+            else:
+                options.append(part)
+        return options
+
+
+
+
+
     # </editor-fold>
 
     # <editor-fold desc="CLI commands">
@@ -86,18 +114,32 @@ class AWAInterpreter(cmd.Cmd):
 
     def do_details(self, line):
         self.do_infos(line)
-        variables = ConfigParser.ConfigParser()
+        variables = ConfigParser.SafeConfigParser()
         variables.read(os.path.join(self.package_path,line,"variables.ini"))
-        output = []
         for section in variables.sections():
             for variable in variables.options(section):
                 print "{} {}".format((section + "." + variable).ljust(40),variables.get(section, variable).ljust(40))
 
     def do_installed(self, line):
-        print "hello"
+        dirty = list()
+        print "Installation ID with related package"
+        for installID in os.listdir(self.webapp_install_path):
+            if self.installExist(installID):
+                install_info_path=os.path.join(self.webapp_install_path, installID, 'install.info')
+                install_info = ConfigParser.SafeConfigParser()
+                install_info.read(install_info_path)
+                print "{} {}".format(installID.ljust(40),install_info.get('installation','package').ljust(40))
+            else:
+                dirty.append(installID)
+        if len(dirty) > 0:
+            print ""
+            print "We found invalid resources in the installation folder (existing folder but not a valid webapp)"
+            print "We recommand you to check the content of those folder and remove it"
+            for dirt in dirty:
+                print os.path.join(self.webapp_install_path, dirt)
 
     def do_install(self, line):
-        ids = line.split()
+        ids = self.splitOptions(line)
         count = len(ids)
         if count == 1:
             packageID=ids[0]
@@ -119,15 +161,15 @@ class AWAInterpreter(cmd.Cmd):
                 install_path=os.path.join(self.webapp_install_path, installID)
 
                 os.mkdir(install_path)
-                process = subprocess.Popen([os.path.join(package_path, "run"), '-p', install_path, '-c', 'install'])
 
+                process = subprocess.Popen([os.path.join(package_path, "run"), '-p', install_path, '-c', 'install'], env=self.env)
                 process.wait()
 
                 if process.returncode == 0:
                     package_info_path=os.path.join(package_path, 'package.info')
                     install_info_path=os.path.join(install_path, 'install.info')
 
-                    install_info = ConfigParser.ConfigParser()
+                    install_info = ConfigParser.SafeConfigParser()
                     install_info.read(package_info_path)
 
                     install_info.add_section('installation')
@@ -148,17 +190,18 @@ class AWAInterpreter(cmd.Cmd):
             print "Package ID "+line+" invalid"
 
     def do_remove(self, line):
-        for installID in line.split():
+        for installID in self.splitOptions(line):
             if self.installExist(installID):
                 install_path=os.path.join(self.webapp_install_path, installID)
 
                 install_info_path=os.path.join(install_path, 'install.info')
-                install_info = ConfigParser.ConfigParser()
+                install_info = ConfigParser.SafeConfigParser()
                 install_info.read(install_info_path)
 
                 package_path=os.path.join(self.package_path, install_info.get('installation','package'))
 
-                subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'remove'])
+                process = subprocess.Popen([os.path.join(package_path, "run"), '-p', install_path, '-c', 'remove'], env=self.env)
+                process.wait()
 
                 httpd_file_path = os.path.join(self.webapp_httpd_config_path, installID+'.conf')
                 os.remove(httpd_file_path)
@@ -174,23 +217,25 @@ class AWAInterpreter(cmd.Cmd):
                 print "Package not installed"
 
     def do_refreshApacheSettings(self, line):
-        for installID in line.split():
+        for installID in self.splitOptions(line):
             if self.installExist(installID):
                 install_path=os.path.join(self.webapp_install_path, installID)
 
                 install_info_path=os.path.join(install_path, 'install.info')
-                install_info = ConfigParser.ConfigParser()
+                install_info = ConfigParser.SafeConfigParser()
                 install_info.read(install_info_path)
 
                 package_path=os.path.join(self.package_path, install_info.get('installation','package'))
 
                 with tempfile.NamedTemporaryFile() as temp_file:
-                    subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', self.apacheVersionKey(), '-f', temp_file.name])
+                    process = subprocess.Popen([os.path.join(package_path, "run"), '-p', install_path, '-c', self.apacheVersionKey(), '-f', temp_file.name], env=self.env)
+                    process.wait()
                     temp_file.flush()
                     httpd_content = temp_file.read()
 
                 with tempfile.NamedTemporaryFile() as temp_file:
-                    subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'webapp', '-f', temp_file.name])
+                    process = subprocess.Popen([os.path.join(package_path, "run"), '-p', install_path, '-c', 'webapp', '-f', temp_file.name], env=self.env)
+                    process.wait()
                     webapp_content = plistlib.readPlist(temp_file)
 
                 httpd_file_path = os.path.join(self.webapp_httpd_config_path, installID+'.conf')
@@ -213,10 +258,76 @@ class AWAInterpreter(cmd.Cmd):
                 print "Package not installed"
 
     def do_getSettings(self, line):
-        print "hello"
+        parts = self.splitOptions(line)
+
+        if len(parts) >= 1:
+            installID = parts[0]
+            if self.installExist(installID):
+                install_path=os.path.join(self.webapp_install_path, installID)
+
+                install_info_path=os.path.join(install_path, 'install.info')
+                install_info = ConfigParser.SafeConfigParser()
+                install_info.read(install_info_path)
+
+                package_path=os.path.join(self.package_path, install_info.get('installation','package'))
+
+                if len(parts) == 1:
+                    process = subprocess.Popen([os.path.join(package_path, "run"), '-p', install_path, '-c', 'get'], env=self.env)
+                    process.wait()
+                else:
+                    key = parts[1]
+                    process = subprocess.Popen([os.path.join(package_path, "run"), '-p', install_path, '-c', 'get', '-k', key], env=self.env)
+                    process.wait()
+            else:
+                print "Invalid specified installation ID"
+        else:
+            print "You must specify at least an installation ID"
+
 
     def do_setSettings(self, line):
-        print "hello"
+        parts = self.splitOptions(line)
+        if len(parts) == 3:
+            installID = parts[0]
+            key = parts[1]
+            value= parts[2]
+            if self.installExist(installID):
+                install_path=os.path.join(self.webapp_install_path, installID)
+
+                install_info_path=os.path.join(install_path, 'install.info')
+                install_info = ConfigParser.SafeConfigParser()
+                install_info.read(install_info_path)
+
+                package_path=os.path.join(self.package_path, install_info.get('installation','package'))
+
+                process = subprocess.Popen([os.path.join(package_path, "run"), '-p', install_path, '-c', 'set', '-k', key, '-s', value], env=self.env)
+                process.wait()
+            else:
+                print "Invalid specified installation ID"
+        else:
+            print "You must specify installation ID, key and value"
+
+
+    def do_unsetSettings(self, line):
+        parts = self.splitOptions(line)
+        if len(parts) == 2:
+            installID = parts[0]
+            key = parts[1]
+            if self.installExist(installID):
+                install_path=os.path.join(self.webapp_install_path, installID)
+
+                install_info_path=os.path.join(install_path, 'install.info')
+                install_info = ConfigParser.SafeConfigParser()
+                install_info.read(install_info_path)
+
+                package_path=os.path.join(self.package_path, install_info.get('installation','package'))
+
+                process = subprocess.Popen([os.path.join(package_path, "run"), '-p', install_path, '-c', 'unset', '-k', key], env=self.env)
+                process.wait()
+            else:
+                print "Invalid specified installation ID"
+        else:
+            print "You must specify installation ID, key and value"
+
 
     def do_EOF(self, line):
         return True
@@ -284,6 +395,12 @@ class AWAInterpreter(cmd.Cmd):
         print '\n'.join([
             "setSettings [webapp] [key] [value]",
             "Set settings for installed webapp."
+        ])
+
+    def help_unsetSettings(self):
+        print '\n'.join([
+            "unsetSettings [webapp] [key]",
+            "Remove settings for installed webapp."
         ])
 
     def help_EOF(self):
