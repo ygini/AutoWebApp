@@ -29,6 +29,10 @@ class AWAInterpreter(cmd.Cmd):
         self.initialCheckup()
 
     def initialCheckup(self):
+        if not os.path.isdir('/Library/Server/Web/Config/apache2/webapps'):
+            print "Impossible to find OS X Server webapps installation folder"
+            print "Please, be sure to install OS X Server app and complete the initial configuration"
+            sys.exit(1)
         for path in [self.webapp_install_path, self.webapp_httpd_config_path]:
             if not os.path.isdir(path):
                 try:
@@ -156,7 +160,16 @@ class AWAInterpreter(cmd.Cmd):
 
                 subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'remove'])
 
+                httpd_file_path = os.path.join(self.webapp_httpd_config_path, installID+'.conf')
+                os.remove(httpd_file_path)
+                webapp_file_path = os.path.join(self.webapp_plist_config_path, installID+'.plist')
+                os.remove(webapp_file_path)
+
                 shutil.rmtree(install_path)
+
+                print "Package removed, if you haven't disabled the package from Server.app before this operation"
+                print "We recommand you to reload apache with the following command:"
+                print "apachectl restart"
             else:
                 print "Package not installed"
 
