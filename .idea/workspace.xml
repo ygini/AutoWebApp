@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4708c46-c3a8-4b4d-9722-d5ed1e814b13" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/autowebapp" afterPath="$PROJECT_DIR$/autowebapp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/httpd22.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="autowebapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -66,6 +67,7 @@
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/munkiwebadmin.wsgi" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/900_fix_perm.sh" />
         <option value="$PROJECT_DIR$/autowebapp" />
+        <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/httpd22.conf" />
       </list>
     </option>
   </component>
@@ -449,14 +451,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/httpd24.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39951575">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/030_deploy_templates.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13092269">
@@ -511,6 +505,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="27" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/httpd24.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/httpd22.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24314214">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding />
         </state>
       </provider>
