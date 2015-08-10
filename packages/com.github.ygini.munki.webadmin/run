@@ -37,7 +37,10 @@ def do_install():
             filename, file_extension = os.path.splitext(script_path)
             if file_extension == ".sh":
                 process_args = [script_path, TARGETPATH]
-                subprocess.call(process_args)
+                returnCode = subprocess.call(process_args)
+                if not returnCode == 0:
+                    print "Error when running subscript "+script_path
+                    exit 1
 
 
 def do_set():

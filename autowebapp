@@ -101,25 +101,29 @@ class AWAInterpreter(cmd.Cmd):
                 install_path=os.path.join(self.webapp_install_path, installID)
 
                 os.mkdir(install_path)
-                subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'install'])
+                returnCode = subprocess.call([os.path.join(package_path, "run"), '-p', install_path, '-c', 'install'])
 
-                package_info_path=os.path.join(package_path, 'package.info')
-                install_info_path=os.path.join(install_path, 'install.info')
+                if returnCode == 0:
+                    package_info_path=os.path.join(package_path, 'package.info')
+                    install_info_path=os.path.join(install_path, 'install.info')
 
-                install_info = ConfigParser.ConfigParser()
-                install_info.read(package_info_path)
+                    install_info = ConfigParser.ConfigParser()
+                    install_info.read(package_info_path)
 
-                install_info.add_section('installation')
-                install_info.set('installation', 'installation_date', datetime.datetime.now().isoformat())
-                install_info.set('installation', 'package', packageID)
+                    install_info.add_section('installation')
+                    install_info.set('installation', 'installation_date', datetime.datetime.now().isoformat())
+                    install_info.set('installation', 'package', packageID)
 
-                f = open(install_info_path, 'w')
-                install_info.write(f)
-                f.close()
+                    f = open(install_info_path, 'w')
+                    install_info.write(f)
+                    f.close()
 
-                self.do_refreshApacheSettings(installID)
+                    self.do_refreshApacheSettings(installID)
 
-                print ""
+                else:
+                    print "We got a problem during installation."
+                    print "Installation path dirty "+install_path
+                    print "Please, try to figure what's wrong, fix it then clean the installation folder and start again."
         else:
             print "Package ID "+line+" invalid"
 

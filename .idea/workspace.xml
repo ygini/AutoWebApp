@@ -2,23 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4708c46-c3a8-4b4d-9722-d5ed1e814b13" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/httpd24.conf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/munkiwebadmin.wsgi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/package.info" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/webapp.plist" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.icinga2/info.txt" afterPath="$PROJECT_DIR$/packages/com.github.ygini.icinga2/info.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.icinga2/run" afterPath="$PROJECT_DIR$/packages/com.github.ygini.icinga2/run" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.munkiweb/files/settings_autowebapp.py" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/settings_autowebapp.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.munkiweb/info.txt" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/info.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.munkiweb/run" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.munkiweb/scripts/010_setup_virtual_env.sh" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.munkiweb/scripts/020_clone_git_repo.sh" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/020_clone_git_repo.sh" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.munkiweb/scripts/030_deploy_templates.sh" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/030_deploy_templates.sh" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.munkiweb/scripts/040_setup_django.sh" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/040_setup_django.sh" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.munkiweb/scripts/shared" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/shared" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/recipes/com.github.ygini.munkiweb/variables.ini" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/variables.ini" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/autowebapp" afterPath="$PROJECT_DIR$/autowebapp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run" afterPath="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run" />
     </list>
     <ignored path="autowebapp.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,7 +29,7 @@
         <entry file="file://$PROJECT_DIR$/autowebapp">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="156" column="52" selection-start-line="156" selection-start-column="52" selection-end-line="156" selection-end-column="52" />
+              <caret line="125" column="121" selection-start-line="125" selection-start-column="121" selection-end-line="125" selection-end-column="121" />
               <folding>
                 <element signature="e#23#32#0" expanded="true" />
               </folding>
@@ -54,8 +40,18 @@
       <file leaf-file-name="run" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3251418">
-              <caret line="88" column="33" selection-start-line="88" selection-start-column="33" selection-end-line="88" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.382793">
+              <caret line="42" column="26" selection-start-line="42" selection-start-column="26" selection-end-line="42" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="010_setup_virtual_env.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="14" column="115" selection-start-line="14" selection-start-column="115" selection-end-line="14" selection-end-column="115" />
               <folding />
             </state>
           </provider>
@@ -78,6 +74,7 @@
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/030_deploy_templates.sh" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/webapp.plist" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/files/httpd24.conf" />
+        <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh" />
         <option value="$PROJECT_DIR$/autowebapp" />
         <option value="$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run" />
       </list>
@@ -375,7 +372,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4686747" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891566" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -387,7 +384,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32891566" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891566" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891566" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -495,10 +492,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/scripts/010_setup_virtual_env.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="115" selection-start-line="14" selection-start-column="115" selection-end-line="14" selection-end-column="115" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/autowebapp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="156" column="52" selection-start-line="156" selection-start-column="52" selection-end-line="156" selection-end-column="52" />
+          <caret line="125" column="121" selection-start-line="125" selection-start-column="121" selection-end-line="125" selection-end-column="121" />
           <folding>
             <element signature="e#23#32#0" expanded="true" />
           </folding>
@@ -507,8 +512,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/packages/com.github.ygini.munki.webadmin/run">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3251418">
-          <caret line="88" column="33" selection-start-line="88" selection-start-column="33" selection-end-line="88" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.382793">
+          <caret line="42" column="26" selection-start-line="42" selection-start-column="26" selection-end-line="42" selection-end-column="26" />
           <folding />
         </state>
       </provider>

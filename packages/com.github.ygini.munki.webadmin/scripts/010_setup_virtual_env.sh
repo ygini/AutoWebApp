@@ -9,8 +9,10 @@ if [ $? -ne 0 ]
 then
     easy_install virtualenv
     if [ $? -ne 0 ]
-    then 
-        echo impossible to install Python virtualenv, please, do it by your own or run this tool as root.
+    then
+        echo "####################################################################################################"
+        echo "### Impossible to install Python virtualenv, please, do it by your own or run this tool as root. ###"
+        echo "####################################################################################################"
         exit 1
     fi
 fi
