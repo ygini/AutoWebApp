@@ -5,14 +5,11 @@ source "$scriptdir/shared"
 
 source "$ENV_PATH/bin/activate"
 
-cd "$MWA_PATH"
-
-
 echo "#############################################################"
 echo "######### NEXT STEP WILL REQUIRE ADMIN ACCOUNT INFO #########"
 echo "#############################################################"
 
-python manage.py syncdb -v 0
-python manage.py collectstatic --noinput > /dev/null
+python "$MWA_PATH/manage.py" syncdb -v 0
+python "$MWA_PATH/manage.py" collectstatic --noinput > /dev/null
 
 exit 0

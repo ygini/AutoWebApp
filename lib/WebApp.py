@@ -6,8 +6,9 @@ import argparse
 import subprocess
 import ConfigParser
 
-class WebApp():
+class WebApp:
     package_path=""
+    ini_settings_relative_path=""
     ini_settings_path=""
     installation_path=""
     exchange_file=""
@@ -16,9 +17,9 @@ class WebApp():
     parser=argparse.ArgumentParser(description='Install the package.')
     commands=dict()
 
-    def __init__(self, package_path, ini_settings_path):
+    def __init__(self, package_path, ini_settings_relative_path):
         self.package_path = package_path
-        self.ini_settings_path = ini_settings_path
+        self.ini_settings_relative_path = ini_settings_relative_path
         self.parser.add_argument('-p','--path', help='Deployment path', required=True)
         self.parser.add_argument('-c','--command', help='Command (install, remove, set, get)', required=True)
         self.parser.add_argument('-k','--key', help='The key to work with (commands: get, set)', required=False)
@@ -30,29 +31,30 @@ class WebApp():
         self.sendCommandTo("get", WebApp.do_get)
         self.sendCommandTo("set", WebApp.do_set)
         self.sendCommandTo("unset", WebApp.do_unset)
-        self.sendCommandTo("http24", WebApp.do_httpd24)
-        self.sendCommandTo("http22", WebApp.do_httpd24)
+        self.sendCommandTo("httpd24", WebApp.do_httpd24)
+        self.sendCommandTo("httpd22", WebApp.do_httpd24)
         self.sendCommandTo("webapp", WebApp.do_webapp)
 
     def run(self):
         args = vars(self.parser.parse_args())
 
         self.installation_path = args['path']
+        self.ini_settings_path = os.path.join(self.installation_path, self.ini_settings_relative_path)
         self.arg_key = args['key']
         self.arg_value = args['set']
         self.exchange_file = args['file']
 
         command = args['command']
         if self.commands.has_key(command):
-            command[command](self)
+            self.commands.get(command)(self)
         else:
-            print "Unsupported command."
+            print "Unsupported command "+command
 
 
     def sendCommandTo(self, command, function):
         self.commands[command] = function
 
-    def do_remove():
+    def do_remove(self):
         for root, dirs, files in os.walk(self.installation_path, topdown=False):
             for name in files:
                 path = os.path.join(root, name)
@@ -67,22 +69,25 @@ class WebApp():
                 else:
                     os.rmdir(path)
 
-    def do_install():
+    def do_install(self):
         src_path = os.path.join(self.package_path,'scripts')
         folder_content = os.listdir(src_path)
         folder_content.sort()
         for script in folder_content:
             script_path = os.path.join(src_path, script)
             if os.access(script_path, os.X_OK):
-                print "Subscript "+script
-                process_args = [script_path, self.installation_path]
-                returnCode = subprocess.call(process_args)
-                if not returnCode == 0:
-                    print "Error when running subscript "+script_path
-                    sys.exit(1)
+                self.do_run_script(script_path)
 
+    def do_run_script(self, script_path):
+        print "Subscript "+os.path.basename(script_path)
+        process_args = [script_path, self.installation_path]
+        process = subprocess.Popen(process_args, env=dict(os.environ, PYTHONPATH=':'.join(sys.path)))
+        process.wait()
+        if not process.returncode == 0:
+            print "Error when running subscript "+script_path
+            sys.exit(1)
 
-    def do_set():
+    def do_set(self):
         config_path=self.ini_settings_path
         settings = ConfigParser.SafeConfigParser()
         settings.read(config_path)
@@ -103,7 +108,7 @@ class WebApp():
         else:
             print "You must specify a key (-k) and a value (-s) to set"
 
-    def do_unset():
+    def do_unset(self):
         config_path=self.ini_settings_path
         settings = ConfigParser.SafeConfigParser()
         settings.read(config_path)
@@ -124,7 +129,7 @@ class WebApp():
         settings.write(f)
         f.close()
 
-    def do_get():
+    def do_get(self):
         config_path=self.ini_settings_path
         settings = ConfigParser.SafeConfigParser()
         settings.read(config_path)
@@ -141,12 +146,12 @@ class WebApp():
             else:
                 print "Invalid key format"
         else:
-            for section in settings.sections():
+            for section in settings.sections(self):
                 for variable in settings.options(section):
                     print "{} {}".format((section + "." + variable).ljust(40),settings.get(section, variable).ljust(40))
 
 
-    def do_httpd24():
+    def do_httpd24(self):
         if self.exchange_file:
             httpd_src = os.path.join(self.package_path, 'files', 'httpd24.conf')
             with open(httpd_src) as f:
@@ -158,7 +163,7 @@ class WebApp():
             print "A writable file path must be specified with -f option."
 
 
-    def do_httpd22():
+    def do_httpd22(self):
         if self.exchange_file:
             httpd_src = os.path.join(self.package_path, 'files', 'httpd22.conf')
             with open(httpd_src) as f:
@@ -169,7 +174,7 @@ class WebApp():
         else:
             print "A writable file path must be specified with -f option."
 
-    def do_webapp():
+    def do_webapp(self):
         if self.exchange_file:
             webapp_src = os.path.join(self.package_path, 'files', 'webapp.plist')
             with open(webapp_src) as f:
