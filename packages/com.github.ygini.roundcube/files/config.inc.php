@@ -43,6 +43,10 @@ $config['smtp_pass'] = '';
 $config['support_url'] = '%%HOSTNAME%%';
 $config['product_name'] = 'Roundcube Webmail';
 
+// Address book
+
+$config['address_book_type'] = '';
+
 // Logs
 $config['log_driver'] = 'syslog';
 $config['syslog_facility'] = LOG_MAIL;

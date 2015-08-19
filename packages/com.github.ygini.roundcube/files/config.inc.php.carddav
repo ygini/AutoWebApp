@@ -1,7 +1,7 @@
 <?php
 
 $prefs['OS X Server'] = array(
-        'name'         =>  'Address Book',
+        'name'         =>  'OS X Server',
         'username'     =>  '%u',
         'password'     =>  '%p',
         'url'          =>  'https://localhost:8443/addressbooks/users/%u/addressbook/',
