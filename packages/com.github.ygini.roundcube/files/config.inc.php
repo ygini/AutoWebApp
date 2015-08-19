@@ -20,7 +20,7 @@
 $config = array();
 
 // Database
-$config['db_dsnw'] = 'sqlite:////%%INSTALLATION_ROOT%%/sqlite.db?mode=0646';
+$config['db_dsnw'] = 'sqlite:///%%SQLITE_PATH%%?mode=0646';
 
 // IMAP settings
 $config['default_host'] = 'localhost';

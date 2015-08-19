@@ -11,11 +11,11 @@ if [[ $EUID -ne 0 ]]; then
     echo ""
     echo "This tool isn't started with root privileges, so you need to execute this command as root:"
     echo "chown -R www:www $RC_PATH"
-    echo "chown -R www:www $RC_DB_SQLITE"
+    echo "chown -R www:www $RC_DB_SQLITE_FOLDER"
 
 else
     chown -R www:www "$RC_PATH"
-    chown -R www:www "$RC_DB_SQLITE"
+    chown -R www:www "$RC_DB_SQLITE_FOLDER"
 fi
 
 exit 0

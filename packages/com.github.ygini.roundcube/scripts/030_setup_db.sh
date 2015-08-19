@@ -3,7 +3,8 @@
 scriptdir=`dirname "$BASH_SOURCE"`
 source "$scriptdir/shared"
 
-sqlite3 "$TARGET_PATH/sqlite.db" < "$RC_PATH/SQL/sqlite.initial.sql"
+mkdir "$RC_DB_SQLITE_FOLDER"
+sqlite3 "$RC_DB_SQLITE_PATH" < "$RC_PATH/SQL/sqlite.initial.sql"
 
 if [ $? -ne 0 ]; then
     exit 1
