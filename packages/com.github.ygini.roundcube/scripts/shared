@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+    echo "Illegal number of parameters"
+    exit 999
+fi
+
+BASE_FOLDER=$(dirname $(dirname "$BASH_SOURCE"))
+
+TARGET_PATH="$1"
+RC_PATH="$TARGET_PATH/roundcube"
+TMP_PATH="$TARGET_PATH/tmp"
+
+RC_FINAL_SETTINGS_PATH="$RC_PATH/config/config.inc.php"
+RC_SRC_SETTINGS_PATH="$BASE_FOLDER/files/config.inc.php"
+
+RC_CARDDAV_FINAL_SETTINGS_PATH="$RC_PATH/plugins/carddav/config.inc.php"
+RC_CARDDAV_SRC_SETTINGS_PATH="$BASE_FOLDER/files/config.inc.php.carddav"
+
+RC_SIEVE_FINAL_SETTINGS_PATH="$RC_PATH/plugins/managesieve/config.inc.php"
+RC_SIEVE_SRC_SETTINGS_PATH="$BASE_FOLDER/files/config.inc.php.sieve"
+
+
+RC_SETTINGS_INI_PATH="$TARGET_PATH/settings.ini"
+
+RC_DB_SQLITE="$TARGET_PATH/sqlite.db"
+
+ask_continue () {
+    read -r -p "${1:-Would you like to continue? [y/N]} " response
+    case $response in
+        [yY][eE][sS]|[yY]) 
+            echo yes
+            ;;
+        *)
+            echo no
+            ;;
+    esac
+}

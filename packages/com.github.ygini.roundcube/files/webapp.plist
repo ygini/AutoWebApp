@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>displayName</key>
+	<string>Roundcube Webmail at /webmail</string>
+	<key>requiredModuleNames</key>
+	<array>
+		<string>php5_module</string>
+        <string>mod_rewrite</string>
+	</array>
+	<key>sslPolicy</key>
+	<integer>0</integer>
+</dict>
+</plist>

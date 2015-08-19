@@ -1,0 +1,1 @@
+This package install roundcube in last version, with CardDAV plugins, everything properly setup for your OS X Server.
