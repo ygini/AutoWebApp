@@ -1,0 +1,12 @@
+<?php
+
+$prefs['OS X Server'] = array(
+        'name'         =>  'OS X Server',
+        'username'     =>  '%u',
+        'password'     =>  '%p',
+        'url'          =>  'https://localhost:8443/addressbooks/users/%u/addressbook/',
+        'readonly'     =>  false,
+        'refresh_time' => '00:01:00',
+        'fixed'        =>  array( 'name', 'password', 'username', 'url'),
+);
+

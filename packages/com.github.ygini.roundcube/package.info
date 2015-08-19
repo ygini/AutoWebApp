@@ -1,0 +1,10 @@
+[general]
+version=1.0
+
+[autowebapp]
+author=Yoann Gini
+website=http://www.inig-services.com
+
+[srcwebapp]
+author=The roundcube community
+website=https://roundcube.net
