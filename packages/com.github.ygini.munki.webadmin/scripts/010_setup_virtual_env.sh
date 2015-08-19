@@ -28,7 +28,13 @@ if [ $? -ne 0 ]
 then
     exit 1
 fi
+
 source "$ENV_PATH/bin/activate"
+
+while read line
+do
+    export PYTHONPATH="$line:$PYTHONPATH"
+done < <(find "$ENV_PATH/lib" -name site-packages)
 
 echo "# Installing Django 1.5.1 in virtual env"
 pip -q install django==1.5.1 > /dev/null
