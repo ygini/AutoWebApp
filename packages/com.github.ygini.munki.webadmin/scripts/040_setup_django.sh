@@ -5,9 +5,9 @@ source "$scriptdir/shared"
 
 source "$ENV_PATH/bin/activate"
 
-echo "#############################################################"
-echo "######### NEXT STEP WILL REQUIRE ADMIN ACCOUNT INFO #########"
-echo "#############################################################"
+echo "#######################################################################"
+echo "######### NEXT STEP WILL REQUIRE YOU CREATE MWA ADMIN ACCOUNT #########"
+echo "#######################################################################"
 
 python "$MWA_PATH/manage.py" syncdb -v 0
 
