@@ -251,9 +251,23 @@ class AWAInterpreter(cmd.Cmd):
                 webapp_content['name'] = installID
                 webapp_content['displayName'] = webapp_content['displayName']+" ("+installID+")"
 
-                webapp_file_path = os.path.join(self.webapp_plist_config_path, installID+'.plist')
+                target_folder=""
+                use_tmp_folder = False
+                if os.access(self.webapp_plist_config_path, os.W_OK):
+                    target_folder = self.webapp_plist_config_path
+                else:
+                    target_folder = "/tmp"
+                    use_tmp_folder = True
+
+                webapp_file_path = os.path.join(target_folder, installID+'.plist')
                 plistlib.writePlist(webapp_content, webapp_file_path)
 
+                if use_tmp_folder:
+                    print "WARNING: This tool isn't run as root, so we aren't able to properly deploy webapp settings for OS X Server"
+                    print "Please, run the following command as root to finish the installation."
+                    print ""
+                    print "mv "+webapp_file_path+" "+self.webapp_plist_config_path
+                    print ""
             else:
                 print "Package not installed"
 
