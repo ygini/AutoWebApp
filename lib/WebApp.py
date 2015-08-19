@@ -5,6 +5,10 @@ import sys
 import argparse
 import subprocess
 import ConfigParser
+import json
+import urllib2
+import tempfile
+import tarfile
 
 class WebApp:
     package_path=""
@@ -17,7 +21,7 @@ class WebApp:
     parser=argparse.ArgumentParser(description='Install the package.')
     commands=dict()
 
-    def __init__(self, package_path, ini_settings_relative_path):
+    def __init__(self, package_path, ini_settings_relative_path="settings.ini"):
         self.package_path = package_path
         self.ini_settings_relative_path = ini_settings_relative_path
         self.parser.add_argument('-p','--path', help='Deployment path', required=True)
@@ -184,3 +188,26 @@ class WebApp:
                 f.write(webapp_conf)
         else:
             print "A writable file path must be specified with -f option."
+
+    def download_last_tarball_release_from(self, owner, project):
+        target_url = "https://api.github.com/repos/"+owner+"/"+project+"/releases/latest"
+        print "Getting info from", target_url
+        data = json.load(urllib2.urlopen(target_url))
+        url = data['tarball_url']
+        print "Downloading last tarbal at", url
+        try:
+            dl = urllib2.urlopen(url)
+            with tempfile.NamedTemporaryFile() as local_file:
+                local_file.write(dl.read())
+                archive = tarfile.open(local_file.name, 'r')
+                print archive.getnames()
+                print "Extrating archive"
+                archive.extractall(os.path.join(self.installation_path, 'archive_content'))
+        except urllib2.HTTPError, e:
+            print "HTTP Error:", e.code, url
+        except urllib2.URLError, e:
+            print "URL Error:", e.reason, url
+        except tarfile.TarError, e:
+            print "Extraction error:", e.reason
+        except:
+            pass

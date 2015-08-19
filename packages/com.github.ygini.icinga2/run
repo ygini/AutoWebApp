@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+
+import os
+from WebApp import WebApp
+
+class Incinga2WebApp(WebApp):
+    def run(self):
+        self.download_last_tarball_release_from('Icinga', 'icinga2')
+        #WebApp.run(self)
+
+
+if __name__ == '__main__':
+    webapp = Incinga2WebApp(package_path=os.path.dirname(os.path.realpath(__file__)))
+    webapp.run()

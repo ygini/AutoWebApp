@@ -1,1 +1,1 @@
-This package deploy a full installation of icinga2 and related web UI.
+This package install munki web admin and let you configure it with your existing munki repo.
