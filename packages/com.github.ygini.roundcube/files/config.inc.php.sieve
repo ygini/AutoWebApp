@@ -19,6 +19,8 @@ $config['managesieve_disabled_extensions'] = array();
 
 $config['managesieve_vacation'] = 1;
 
+$config['managesieve_vacation_addresses_init'] = true;
+
 // Default vacation interval (in days).
 // Note: If server supports vacation-seconds extension it is possible
 // to define interval in seconds here (as a string), e.g. "3600s".
