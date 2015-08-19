@@ -22,7 +22,7 @@ sed -i -e "s@%%HOSTNAME%%@$(hostname)@g" "$TMP_CONFIG"
 sed -i -e "s@%%DOMAIN%%@$domain@g" "$TMP_CONFIG"
 sed -i -e "s@%%SQLITE_PATH%%@$RC_DB_SQLITE_PATH@g" "$TMP_CONFIG"
 
-KEY=$(uuidgen | awk -F'-' '{print $1"-"$2"-"$3"-"$4}')
+KEY=$(uuidgen | awk -F'-' '{print $1"-"$2"-"$3"-"$4"-"}')
 
 sed -i -e "s@%%RAND_24%%@$KEY@g" "$TMP_CONFIG"
 
