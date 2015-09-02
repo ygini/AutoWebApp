@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ $EUID -ne 0 ]]
+then
+    echo "You need to be root to run this package"
+    exit 1
+fi
+
+if [ ! -f "/opt/local/bin/port" ]
+then
+    echo "MacPorts must be installed to deploy this package (and no, Homebrew isn't supported)"
+    echo "Please download and install the appropritate version of MacPorts and start again"
+    echo "https://www.macports.org/install.php"
+fi
+
+exit 0

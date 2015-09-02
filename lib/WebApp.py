@@ -15,6 +15,7 @@ class WebApp:
     ini_settings_relative_path=""
     ini_settings_path=""
     installation_path=""
+    tmp_folder=""
     exchange_file=""
     arg_key=""
     arg_value=""
@@ -41,25 +42,37 @@ class WebApp:
 
     def run(self):
         args = vars(self.parser.parse_args())
-
+        
         self.installation_path = args['path']
         self.ini_settings_path = os.path.join(self.installation_path, self.ini_settings_relative_path)
+        self.tmp_folder = os.path.join(self.installation_path, 'tmp')
         self.arg_key = args['key']
         self.arg_value = args['set']
         self.exchange_file = args['file']
 
+        if not os.path.exists(self.tmp_folder):
+            os.makedirs(self.tmp_folder)
         command = args['command']
+
+        self.pre_command(command)
+        
         if self.commands.has_key(command):
             self.commands.get(command)(self)
         else:
             print "Unsupported command "+command
+        self.delete_folder_and_content(self.tmp_folder)
 
-
+    def pre_command(self, command):
+        pass
+    
     def sendCommandTo(self, command, function):
         self.commands[command] = function
 
     def do_remove(self):
-        for root, dirs, files in os.walk(self.installation_path, topdown=False):
+        self.delete_folder_and_content(self.installation_path)
+
+    def delete_folder_and_content(self, target_folder):
+        for root, dirs, files in os.walk(target_folder, topdown=False):
             for name in files:
                 path = os.path.join(root, name)
                 if os.path.islink(path):
@@ -191,18 +204,16 @@ class WebApp:
 
     def download_last_tarball_release_from(self, owner, project):
         target_url = "https://api.github.com/repos/"+owner+"/"+project+"/releases/latest"
+        archive_path = os.path.join(self.tmp_folder, 'archive.tar.XX')
         print "Getting info from", target_url
         data = json.load(urllib2.urlopen(target_url))
         url = data['tarball_url']
-        print "Downloading last tarbal at", url
+        print "Downloading last tarbal from", url, "to", archive_path
         try:
             dl = urllib2.urlopen(url)
-            with tempfile.NamedTemporaryFile() as local_file:
+            with open(archive_path, 'w') as local_file:
                 local_file.write(dl.read())
-                archive = tarfile.open(local_file.name, 'r')
-                print archive.getnames()
-                print "Extrating archive"
-                archive.extractall(os.path.join(self.installation_path, 'archive_content'))
+            return archive_path
         except urllib2.HTTPError, e:
             print "HTTP Error:", e.code, url
         except urllib2.URLError, e:
@@ -211,3 +222,63 @@ class WebApp:
             print "Extraction error:", e.reason
         except:
             pass
+
+    def create_user_and_group(self, user, group):
+        # Group creation
+        try:
+            group_info = subprocess.check_output(['dseditgroup', '-o', 'read', group])
+        except:
+            group_info = ""
+            pass
+        if not group_info:
+            print "Create group", group
+            try:
+                subprocess.check_output(['dseditgroup', '-o', 'create', group])
+            except:
+                print "Error when creating group"
+                sys.exit(1)
+        else:
+            print "Group", group, "already exist, we will use it."
+
+        try:
+            user_info = subprocess.check_output(['id', user])
+        except:
+            user_info = ""
+            pass
+        if not user_info:
+            print "Create user", user
+            try:
+                group_id = subprocess.check_output(['dscl', '.', '-read', "/Groups/"+group, 'PrimaryGroupID']).split()[1]
+                print "Group ID for", group, "is", group_id
+            
+                existing_user_id = list()
+                for line in subprocess.check_output(['dscl', '.', '-list', "/Users", 'UniqueID']).splitlines():
+                    existing_user_id.append(int(line.split()[1]))
+
+                previous_user_id = None
+                user_id = None
+                for existing_id in sorted(existing_user_id):
+                    if previous_user_id and existing_id > 100:
+                        if previous_user_id + 1 != existing_id:
+                            user_id = previous_user_id + 1
+                            break
+                    previous_user_id = existing_id
+                print "First available user ID is", user_id
+
+                subprocess.check_output(['dscl', '.', '-create', "/Users/"+user, 'UserShell', '/usr/bin/false'])
+                subprocess.check_output(['dscl', '.', '-create', "/Users/"+user, 'NFSHomeDirectory', self.installation_path])
+                subprocess.check_output(['dscl', '.', '-create', "/Users/"+user, 'UniqueID', str(user_id)])
+                subprocess.check_output(['dscl', '.', '-create', "/Users/"+user, 'PrimaryGroupID', str(group_id)])
+                subprocess.check_output(['dscl', '.', '-create', "/Users/"+user, 'RealName', user])
+            except Exception as e:
+                print "Error when creating user"
+                print e
+                sys.exit(1)
+        else:
+            print "User", user, "already exist, we will use it."
+        
+        try:
+            subprocess.check_output(['dseditgroup', '-o', 'edit', '-a', user, group])
+        except:
+            pass
+

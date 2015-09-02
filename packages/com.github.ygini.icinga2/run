@@ -4,10 +4,10 @@ import os
 from WebApp import WebApp
 
 class Incinga2WebApp(WebApp):
-    def run(self):
-        self.download_last_tarball_release_from('Icinga', 'icinga2')
-        #WebApp.run(self)
-
+    def pre_command(self, command):
+        if command == "install":
+            archive_path = self.download_last_tarball_release_from('Icinga', 'icinga2')
+            self.create_user_and_group('com.github.ygini.icinga2', 'com.github.ygini.icinga2')
 
 if __name__ == '__main__':
     webapp = Incinga2WebApp(package_path=os.path.dirname(os.path.realpath(__file__)))
