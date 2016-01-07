@@ -97,3 +97,4 @@ Yes
 bash-3.2# /Library/webapp/autowebapp setSettings com.github.ygini.munki.webadmin munkiwebadmin.model Yes
 Yes
 ```
+Now you just have to enable the web app in Server.app.
