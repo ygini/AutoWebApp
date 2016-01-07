@@ -24,12 +24,12 @@ Here is small sample describing how to install webapp with munki web admin
 srvmac:~ ladmin$ sudo -s
 Password:
 bash-3.2# cd /Library/
-bash-3.2# git clone https://github.com/ygini/webapp.git
+bash-3.2# git clone httpshttps://github.com/ygini/AutoWebApp.git
 ```
 ## Get help and list available recipes
 
 ```
-bash-3.2# /Library/webapp/autowebapp help
+bash-3.2# /Library/AutoWebApp/autowebapp help
 
 Documented commands (type help <topic>):
 ========================================
@@ -40,7 +40,7 @@ Undocumented commands:
 ======================
 exit  quit
 
-bash-3.2# /Library/webapp/autowebapp list
+bash-3.2# /Library/AutoWebApp/autowebapp list
 com.github.ygini.munki.webadmin
 com.github.ygini.roundcube
 ```
@@ -48,9 +48,9 @@ com.github.ygini.roundcube
 ## Install munki web admin
 
 ```
-bash-3.2# /Library/webapp/autowebapp install com.github.ygini.munki.webadmin
+bash-3.2# /Library/AutoWebApp/autowebapp install com.github.ygini.munki.webadmin
 Subscript 010_setup_virtual_env.sh
-# Deploying new python virtualenv (/Library/webapp/installed/com.github.ygini.munki.webadmin/munkiwebadmin_env)
+# Deploying new python virtualenv (/Library/AutoWebApp/installed/com.github.ygini.munki.webadmin/munkiwebadmin_env)
 # Installing Django 1.5.1 in virtual env
 Subscript 020_clone_git_repo.sh
 xcode-select: note: no developer tools were found at '/Applications/Xcode.app', requesting install. Choose an option in the dialog to download the command line developer tools.
@@ -74,11 +74,11 @@ Subscript 900_fix_perm.sh
 ## Configure munki web admin
 
 ```
-bash-3.2# /Library/webapp/autowebapp installed
+bash-3.2# /Library/AutoWebApp/autowebapp installed
 Installation ID with related package
 com.github.ygini.munki.webadmin          com.github.ygini.munki.webadmin         
 
-bash-3.2# /Library/webapp/autowebapp details com.github.ygini.munki.webadmin
+bash-3.2# /Library/AutoWebApp/autowebapp details com.github.ygini.munki.webadmin
 This package install munki web admin and let you configure it with your existing munki repo.
 
 django.secret_key                        The secret key used by Django framework for security task. Generated randomly during webapp installation. Do not edit.
@@ -88,13 +88,13 @@ munkiwebadmin.warranty                   If set to Yes, the user will be allowed
 munkiwebadmin.model                      If set to Yes, Munki Web Admin will check online to show a human readable version of computers model name.
 munkiwebadmin.proxy                      If warranty or model are set and if your network require proxy for internet access, set to user:password@example.com:port (user:password@ and :port are optional), otherwise leave blank
 
-bash-3.2# /Library/webapp/autowebapp setSettings com.github.ygini.munki.webadmin munki.path /Partages/munki_repo
+bash-3.2# /Library/AutoWebApp/autowebapp setSettings com.github.ygini.munki.webadmin munki.path /Partages/munki_repo
 /Partages/munki_repo
-bash-3.2# /Library/webapp/autowebapp setSettings com.github.ygini.munki.webadmin munkiwebadmin.timezone Europe/Paris
+bash-3.2# /Library/AutoWebApp/autowebapp setSettings com.github.ygini.munki.webadmin munkiwebadmin.timezone Europe/Paris
 Europe/Paris
-bash-3.2# /Library/webapp/autowebapp setSettings com.github.ygini.munki.webadmin munkiwebadmin.warranty Yes
+bash-3.2# /Library/AutoWebApp/autowebapp setSettings com.github.ygini.munki.webadmin munkiwebadmin.warranty Yes
 Yes
-bash-3.2# /Library/webapp/autowebapp setSettings com.github.ygini.munki.webadmin munkiwebadmin.model Yes
+bash-3.2# /Library/AutoWebApp/autowebapp setSettings com.github.ygini.munki.webadmin munkiwebadmin.model Yes
 Yes
 ```
 Now you just have to enable the web app in Server.app.
