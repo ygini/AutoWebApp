@@ -3,7 +3,7 @@
 scriptdir=`dirname "$BASH_SOURCE"`
 source "$scriptdir/shared"
 
-test_for_git=$(git | grep xcode | wc -l | bc)
+test_for_git=$(git 2>&1 | grep xcode | wc -l | bc)
 
 if [ $test_for_git -ne 0 ]
 then
